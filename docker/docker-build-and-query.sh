@@ -7,10 +7,6 @@ if [ "${1:0:1}" = '-' ]; then
 fi
 
 
-if [ "$1" = 'postgres' ] && [ ! -v $GEOID ]; then
-  osmium cat  scripts/input/spain-latest.osm.pbf -f osm -o scripts/input/spain.osm
-fi
-
 # allow the container to be started with `--user`
 if [ "$1" = 'postgres' ] && [ "$(id -u)" = '0' ]; then
 
@@ -42,10 +38,6 @@ if [ "$1" = 'postgres' ] && [ "$(id -u)" = '0' ]; then
 		esac
 		echo
 	done
-
-  gosu postgres /stop-postgres-db.sh
-
-  s3cmd put scripts/output/cost_matrix.csv s3://jsaxon-routing/output/${GEOID}.csv
 
   exit 0
 
